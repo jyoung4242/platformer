@@ -1,12 +1,24 @@
 // resources.ts
-import { ImageSource, Loader, Sprite, SpriteSheet, Animation, AnimationStrategy } from "excalibur";
+import { ImageSource, Loader, Sprite, SpriteSheet, Animation, AnimationStrategy, Graphic } from "excalibur";
 import playerImage from "./Assets/player assets/player.png"; // replace this
 import block from "./Assets/block.png";
+import fireRune from "./Assets/fire rune-Sheet.png";
 
 export const Resources = {
   player: new ImageSource(playerImage),
   block: new ImageSource(block),
+  fireRune: new ImageSource(fireRune),
 };
+
+export const fireRuneSS = SpriteSheet.fromImageSource({
+  image: Resources.fireRune,
+  grid: {
+    rows: 1,
+    columns: 3,
+    spriteWidth: 16,
+    spriteHeight: 16,
+  },
+});
 
 export const playerSS = SpriteSheet.fromImageSource({
   image: Resources.player,
@@ -30,6 +42,24 @@ export const playerRunningSS = SpriteSheet.fromImageSource({
     originOffset: { x: 0, y: 32 },
     margin: { x: 0, y: 0 },
   },
+});
+
+export const fireRuneAnimation = new Animation({
+  strategy: AnimationStrategy.Loop,
+  frames: [
+    {
+      graphic: fireRuneSS.getSprite(0, 0),
+      duration: 100,
+    },
+    {
+      graphic: fireRuneSS.getSprite(1, 0),
+      duration: 100,
+    },
+    {
+      graphic: fireRuneSS.getSprite(2, 0),
+      duration: 100,
+    },
+  ],
 });
 
 export const playerAnimation = new Animation({

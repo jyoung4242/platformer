@@ -1,4 +1,4 @@
-import { Actor, vec, Engine, CollisionType, Collider, CollisionContact, Side, TileMap } from "excalibur";
+import { Actor, vec, Engine, CollisionType, Collider, CollisionContact, Side, TileMap, CollisionGroup } from "excalibur";
 import { AnimationComponent } from "../Components/AnimationComponent";
 import { KeyboardControl } from "../Components/KeyboardControl";
 import {
@@ -10,6 +10,9 @@ import {
   jumpLeft,
 } from "../resources";
 import { game } from "../main";
+import { Relic } from "./Relic";
+
+const playerCollisionGroup = new CollisionGroup("player", 0b0001, 0b0010);
 
 export class Player extends Actor {
   groundColliders: Collider[] = [];
@@ -35,6 +38,7 @@ export class Player extends Actor {
       width: 24,
       height: 32,
       collisionType: CollisionType.Active,
+      collisionGroup: playerCollisionGroup,
     });
     this.body.useGravity = true;
   }
@@ -110,6 +114,9 @@ export class Player extends Actor {
       if (this.groundColliders.includes(other)) return;
       this.groundColliders.push(other);
       this.isOnGround = true;
+    }
+    if (other.owner instanceof Relic) {
+      if (!(other.owner as Relic).pu.isPickedUp) (other.owner as Relic).pu.grab(this);
     }
   }
 }

@@ -8,6 +8,7 @@ import { loader, Resources } from "./resources";
 import { Player } from "./Actors/Player";
 import { LevelEditor } from "./Lib/LevelEditor";
 import { level1, levelsprites } from "./levelData/levelOne";
+import { FireRune, Relic } from "./Actors/Relic";
 
 await UI.create(document.body, model, template).attached;
 
@@ -17,6 +18,7 @@ export const game = new Engine({
   canvasElementId: "cnv", // the DOM canvas element ID, if you are providing your own
   displayMode: DisplayMode.Fixed, // the display mode
   pixelArt: true,
+  fixedUpdateFps: 60,
 });
 
 //game.physics.gravity = vec(0, 400);
@@ -29,3 +31,6 @@ let levelEditor = new LevelEditor();
 
 let level = levelEditor.createLevel(level1, levelsprites);
 level.forEach(tileMap => game.add(tileMap));
+
+let relic1 = new FireRune(vec(290, 0));
+game.add(relic1);
