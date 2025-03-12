@@ -22,6 +22,7 @@ export class LevelEditor {
       let { levelData, tilesize, mapsize, mapPosition } = data;
       let parsedMap = parseAsciiMap(levelData);
       let options: TileMapOptions = {
+        pos: mapPosition.clone(),
         tileWidth: tilesize.x,
         tileHeight: tilesize.y,
         columns: mapsize.x,
@@ -30,7 +31,10 @@ export class LevelEditor {
       let map = new TileMap(options);
       let tileIndex = 0;
       for (const tile of map.tiles) {
+        if (tile.x == 0 && tile.y == 0) debugger;
         let char = getCharAt(parsedMap, tileIndex % options.columns, Math.floor(tileIndex / options.columns));
+        if (char?.charCodeAt(0) == 35) console.log(tile.x + " " + tile.y);
+
         let charcode = char ? char.charCodeAt(0) : 0;
         //debugger;
         if (charcode != 32 && char) {
@@ -39,9 +43,6 @@ export class LevelEditor {
         }
         tileIndex++;
       }
-      map.pos = mapPosition;
-      console.log(map);
-
       mapArray.push(map);
     });
 
@@ -50,8 +51,12 @@ export class LevelEditor {
 }
 
 function parseAsciiMap(mapString: string): string[][] {
+  if (mapString.startsWith("\n")) {
+    mapString = mapString.slice(1);
+  }
+
   return mapString
-    .trim() // Remove any leading/trailing newlines or spaces
+
     .split("\n") // Split into lines
     .map(line => line.split("")); // Convert each line into an array of characters
 }

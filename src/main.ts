@@ -23,11 +23,9 @@ export const game = new Engine({
 await game.start(loader);
 
 game.add(new Player());
-game.currentScene.camera.zoom = 1.5;
+game.currentScene.camera.zoom = 2.5;
 
 let levelEditor = new LevelEditor();
 
 let level = levelEditor.createLevel(level1, levelsprites);
-console.log(level);
-
 level.forEach(tileMap => game.add(tileMap));

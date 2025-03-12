@@ -12,6 +12,7 @@ import {
 import { game } from "../main";
 
 export class Player extends Actor {
+  groundColliders: Collider[] = [];
   km: KeyboardControl = new KeyboardControl(game);
   am: AnimationComponent<"run" | "runleft" | "idle" | "idleleft" | "jump" | "jumpleft"> = new AnimationComponent({
     idle: playerAnimation,
@@ -98,10 +99,17 @@ export class Player extends Actor {
   }
 
   onCollisionEnd(self: Collider, other: Collider, side: Side, lastContact: CollisionContact): void {
-    if (other.owner instanceof TileMap && side == Side.Bottom) this.isOnGround = false;
+    if (other.owner instanceof TileMap && side == Side.Bottom) {
+      if (this.groundColliders.includes(other)) this.groundColliders.splice(this.groundColliders.indexOf(other), 1);
+      if (this.groundColliders.length == 0) this.isOnGround = false;
+    }
   }
 
   onCollisionStart(self: Collider, other: Collider, side: Side, contact: CollisionContact): void {
-    if (other.owner instanceof TileMap && side == Side.Bottom) this.isOnGround = true;
+    if (other.owner instanceof TileMap && side == Side.Bottom) {
+      if (this.groundColliders.includes(other)) return;
+      this.groundColliders.push(other);
+      this.isOnGround = true;
+    }
   }
 }
