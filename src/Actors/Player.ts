@@ -1,4 +1,17 @@
-import { Actor, vec, Engine, CollisionType, Collider, CollisionContact, Side, TileMap, CollisionGroup } from "excalibur";
+import {
+  Actor,
+  vec,
+  Engine,
+  CollisionType,
+  Collider,
+  CollisionContact,
+  Side,
+  TileMap,
+  CollisionGroup,
+  Material,
+  Shader,
+  Color,
+} from "excalibur";
 import { AnimationComponent } from "../Components/AnimationComponent";
 import { KeyboardControl } from "../Components/KeyboardControl";
 import {
@@ -11,6 +24,8 @@ import {
 } from "../resources";
 import { game } from "../main";
 import { Relic } from "./Relic";
+import { HasJob } from "../Components/Jobs";
+import { tintShader } from "../Shaders/tintShader";
 
 const playerCollisionGroup = new CollisionGroup("player", 0b0001, 0b0010);
 
@@ -29,6 +44,9 @@ export class Player extends Actor {
   isJumping: boolean = false;
   jumpHoldCount: number = 0;
   maxJumpVelocity: number = -175;
+  job: HasJob | undefined;
+  tintMaterial: Material | undefined;
+  tintColor: Color | undefined;
 
   facingDirection: "left" | "right" = "right";
 
@@ -46,11 +64,27 @@ export class Player extends Actor {
     this.scene!.camera.strategy.lockToActor(this);
     this.addComponent(this.am);
     this.addComponent(this.km);
+    this.addComponent(new HasJob(this));
     this.am.set("idle");
+
+    this.tintMaterial = engine.graphicsContext.createMaterial({
+      name: "tint",
+      fragmentSource: tintShader,
+    });
+    this.graphics.material = this.tintMaterial;
   }
 
   onPreUpdate(engine: Engine, elapsed: number): void {
     this.km.update(engine, elapsed);
+
+    if (this.tintColor) {
+      this.graphics.material = this.tintMaterial as Material;
+      this.tintMaterial?.update((shader: Shader) => {
+        shader.trySetUniformFloatColor("u_tintcolor", this.tintColor as Color);
+      });
+    } else {
+      this.graphics.material = null;
+    }
 
     if (this.vel.y < -10 && this.vel.y > 5) engine.physics.gravity = vec(0, 300);
     else engine.physics.gravity = vec(0, 400);

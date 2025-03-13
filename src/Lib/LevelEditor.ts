@@ -31,7 +31,6 @@ export class LevelEditor {
       let map = new TileMap(options);
       let tileIndex = 0;
       for (const tile of map.tiles) {
-        if (tile.x == 0 && tile.y == 0) debugger;
         let char = getCharAt(parsedMap, tileIndex % options.columns, Math.floor(tileIndex / options.columns));
         if (char?.charCodeAt(0) == 35) console.log(tile.x + " " + tile.y);
 
