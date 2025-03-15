@@ -1,4 +1,5 @@
-import { Component, Engine, Entity } from "excalibur";
+import { Component, Engine, Entity, Keys } from "excalibur";
+import { Player } from "../Actors/Player";
 
 export class KeyboardControl extends Component {
   _directions: string[] = [];
@@ -26,8 +27,17 @@ export class KeyboardControl extends Component {
         case "ArrowDown":
           this._directions.push("down");
           break;
+        case "KeyA":
+          (owner as Player).primaryAction(owner as Player, owner.scene!);
+          (owner as Player).isAttacking = true;
+          break;
+        case "KeyS":
+          (owner as Player).secondaryAction(owner as Player, owner.scene!);
+          (owner as Player).isAttacking = true;
+          break;
       }
     });
+
     this.owner?.scene!.input.keyboard.on("release", (event: any) => {
       switch (event.key) {
         case "ArrowLeft":
@@ -41,6 +51,12 @@ export class KeyboardControl extends Component {
           break;
         case "ArrowDown":
           this._directions.splice(this._directions.indexOf("down"), 1);
+          break;
+        case "KeyA":
+          (owner as Player).isAttacking = false;
+          break;
+        case "KeyS":
+          (owner as Player).isAttacking = false;
           break;
       }
     });

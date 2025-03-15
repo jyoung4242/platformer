@@ -3,11 +3,13 @@ import { ImageSource, Loader, Sprite, SpriteSheet, Animation, AnimationStrategy,
 import playerImage from "./Assets/player assets/player.png"; // replace this
 import block from "./Assets/block.png";
 import fireRune from "./Assets/fire rune-Sheet.png";
+import fireball from "./Assets/fireball.png";
 
 export const Resources = {
   player: new ImageSource(playerImage),
   block: new ImageSource(block),
   fireRune: new ImageSource(fireRune),
+  fireball: new ImageSource(fireball),
 };
 
 export const fireRuneSS = SpriteSheet.fromImageSource({

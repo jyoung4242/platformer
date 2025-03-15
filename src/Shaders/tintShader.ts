@@ -13,7 +13,7 @@ void main() {
   vec4 originalColor = texture(u_graphic, v_uv);
   fragColor = originalColor;
   if (originalColor.a > 0.) {
-    fragColor = mix(originalColor, u_tintcolor, .5);
+    fragColor = mix(originalColor, u_tintcolor, .3);
   }
   fragColor.rgb = fragColor.rgb * fragColor.a;
 }

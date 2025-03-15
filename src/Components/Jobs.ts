@@ -69,6 +69,8 @@ export class GiveJobAction implements Action {
         (this.receiver.get(HasJob) as HasJob).switchJob(this.job);
         if (this.owner instanceof Relic && this.owner.tintColor) {
           (this.receiver as Player).tintColor = this.owner.tintColor;
+          (this.receiver as Player).primaryAction = this.owner.primaryAction;
+          (this.receiver as Player).secondaryAction = this.owner.secondaryAction;
         }
       }
       this._stopped = true;

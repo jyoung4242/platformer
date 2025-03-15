@@ -11,6 +11,7 @@ import {
   Material,
   Shader,
   Color,
+  Scene,
 } from "excalibur";
 import { AnimationComponent } from "../Components/AnimationComponent";
 import { KeyboardControl } from "../Components/KeyboardControl";
@@ -21,6 +22,8 @@ import {
   flipPlayerAnimation,
   jumpRight,
   jumpLeft,
+  Resources,
+  playerRunningSS,
 } from "../resources";
 import { game } from "../main";
 import { Relic } from "./Relic";
@@ -45,8 +48,12 @@ export class Player extends Actor {
   jumpHoldCount: number = 0;
   maxJumpVelocity: number = -175;
   job: HasJob | undefined;
-  tintMaterial: Material | undefined;
+  //tintMaterial: Material | undefined;
   tintColor: Color | undefined;
+  isAttacking: boolean = false;
+
+  primaryAction: (parent: Actor, scene: Scene) => void = () => {};
+  secondaryAction: (parent: Actor, scene: Scene) => void = () => {};
 
   facingDirection: "left" | "right" = "right";
 
@@ -67,27 +74,35 @@ export class Player extends Actor {
     this.addComponent(new HasJob(this));
     this.am.set("idle");
 
-    this.tintMaterial = engine.graphicsContext.createMaterial({
+    /* this.tintMaterial = engine.graphicsContext.createMaterial({
       name: "tint",
       fragmentSource: tintShader,
-    });
-    this.graphics.material = this.tintMaterial;
+    }); */
+    //this.graphics.material = this.tintMaterial;
   }
 
   onPreUpdate(engine: Engine, elapsed: number): void {
     this.km.update(engine, elapsed);
 
     if (this.tintColor) {
-      this.graphics.material = this.tintMaterial as Material;
+      /*  this.graphics.material = this.tintMaterial as Material;
       this.tintMaterial?.update((shader: Shader) => {
         shader.trySetUniformFloatColor("u_tintcolor", this.tintColor as Color);
-      });
+      }); */
+      this.am.tint(this.tintColor);
     } else {
-      this.graphics.material = null;
+      //this.graphics.material = null;
+      this.am.tint(null);
     }
 
     if (this.vel.y < -10 && this.vel.y > 5) engine.physics.gravity = vec(0, 300);
     else engine.physics.gravity = vec(0, 400);
+
+    if (this.isOnGround && this.isAttacking) {
+      if (this.facingDirection == "left") this.graphics.use(playerRunningSS.getSprite(1, 1)).flipHorizontal = true;
+      else this.graphics.use(playerRunningSS.getSprite(1, 1)).flipHorizontal = false;
+      return;
+    }
 
     if (!this.isOnGround) {
       if (this.facingDirection == "left") this.am.set("jumpleft");

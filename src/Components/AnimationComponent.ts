@@ -1,4 +1,4 @@
-import { Component, Entity, Frame, GraphicsComponent, Animation } from "excalibur";
+import { Component, Entity, Frame, GraphicsComponent, Animation, Color } from "excalibur";
 
 export class AnimationComponent<Keys extends string> extends Component {
   declare owner: Entity & { graphics: GraphicsComponent };
@@ -33,6 +33,13 @@ export class AnimationComponent<Keys extends string> extends Component {
     }
 
     this.owner.graphics.use(anim);
+  }
+
+  tint(color: Color | null) {
+    debugger;
+    if (this.current === undefined) return;
+    if (color === null) this.current.tint = Color.White;
+    else this.current.tint = color;
   }
 
   get(name: Keys) {
