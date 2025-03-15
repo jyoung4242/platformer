@@ -36,7 +36,6 @@ export class AnimationComponent<Keys extends string> extends Component {
   }
 
   tint(color: Color | null) {
-    debugger;
     if (this.current === undefined) return;
     if (color === null) this.current.tint = Color.White;
     else this.current.tint = color;

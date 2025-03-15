@@ -4,13 +4,35 @@ import playerImage from "./Assets/player assets/player.png"; // replace this
 import block from "./Assets/block.png";
 import fireRune from "./Assets/fire rune-Sheet.png";
 import fireball from "./Assets/fireball.png";
+import enemy from "./Assets/enemy.png";
 
 export const Resources = {
   player: new ImageSource(playerImage),
   block: new ImageSource(block),
   fireRune: new ImageSource(fireRune),
   fireball: new ImageSource(fireball),
+  enemy: new ImageSource(enemy),
 };
+
+export const enemySS = SpriteSheet.fromImageSource({
+  image: Resources.enemy,
+  grid: {
+    rows: 1,
+    columns: 3,
+    spriteWidth: 24,
+    spriteHeight: 32,
+  },
+});
+
+export const enemyAnimation = new Animation({
+  strategy: AnimationStrategy.Loop,
+  frames: [
+    { graphic: enemySS.getSprite(0, 0), duration: 200 },
+    { graphic: enemySS.getSprite(1, 0), duration: 200 },
+    { graphic: enemySS.getSprite(0, 0), duration: 200 },
+    { graphic: enemySS.getSprite(2, 0), duration: 200 },
+  ],
+});
 
 export const fireRuneSS = SpriteSheet.fromImageSource({
   image: Resources.fireRune,

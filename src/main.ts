@@ -9,6 +9,7 @@ import { Player } from "./Actors/Player";
 import { LevelEditor } from "./Lib/LevelEditor";
 import { level1, levelsprites } from "./levelData/levelOne";
 import { FireRune, Relic } from "./Actors/Relic";
+import { Enemy } from "./Actors/enemy";
 
 await UI.create(document.body, model, template).attached;
 
@@ -34,3 +35,5 @@ level.forEach(tileMap => game.add(tileMap));
 
 let relic1 = new FireRune(vec(290, 0));
 game.add(relic1);
+
+game.add(new Enemy());
