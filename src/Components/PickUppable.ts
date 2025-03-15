@@ -25,7 +25,7 @@ export class PickUppable extends Component {
     if (this.owner instanceof Relic && grabber.has(HasJob))
       (this.owner as Actor).actions
         .runAction(actionSequence)
-        .meet(grabber, 350)
+        .meet(grabber, 350, 5) //(grabber, 350)
         .runAction(new GiveJobAction(this.owner, grabber, (this.owner as Relic).givesJob!.job))
         .die();
     else (this.owner as Actor).actions.runAction(actionSequence).meet(grabber, 350).die();

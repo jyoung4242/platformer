@@ -34,6 +34,9 @@ export const enemyAnimation = new Animation({
   ],
 });
 
+export const rightEnemyAnimation = enemyAnimation.clone();
+rightEnemyAnimation.flipHorizontal = true;
+
 export const fireRuneSS = SpriteSheet.fromImageSource({
   image: Resources.fireRune,
   grid: {

@@ -71,6 +71,8 @@ export class GiveJobAction implements Action {
           (this.receiver as Player).tintColor = this.owner.tintColor;
           (this.receiver as Player).primaryAction = this.owner.primaryAction;
           (this.receiver as Player).secondaryAction = this.owner.secondaryAction;
+          (this.receiver as Player).primaryCooldown = this.owner.primaryCooldown;
+          (this.receiver as Player).secondaryCooldown = this.owner.secondaryCooldown;
         }
       }
       this._stopped = true;

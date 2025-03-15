@@ -20,6 +20,11 @@ export const game = new Engine({
   displayMode: DisplayMode.Fixed, // the display mode
   pixelArt: true,
   fixedUpdateFps: 60,
+  physics: {
+    colliders: {
+      compositeStrategy: "separate",
+    },
+  },
 });
 
 //game.physics.gravity = vec(0, 400);

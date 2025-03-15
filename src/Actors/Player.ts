@@ -30,7 +30,7 @@ import { Relic } from "./Relic";
 import { HasJob } from "../Components/Jobs";
 import { tintShader } from "../Shaders/tintShader";
 
-const playerCollisionGroup = new CollisionGroup("player", 0b0001, 0b0010);
+const playerCollisionGroup = new CollisionGroup("player", 0b0001, 0b110);
 
 export class Player extends Actor {
   groundColliders: Collider[] = [];
@@ -55,6 +55,15 @@ export class Player extends Actor {
   primaryAction: (parent: Actor, scene: Scene) => void = () => {};
   secondaryAction: (parent: Actor, scene: Scene) => void = () => {};
 
+  primaryCooldown: number = 0;
+  secondaryCooldown: number = 0;
+
+  primaryCooldownTik: number = 0;
+  secondaryCooldownTik: number = 0;
+
+  primaryEnableFlag: boolean = true;
+  secondaryEnableFlag: boolean = true;
+
   facingDirection: "left" | "right" = "right";
 
   constructor() {
@@ -73,26 +82,28 @@ export class Player extends Actor {
     this.addComponent(this.km);
     this.addComponent(new HasJob(this));
     this.am.set("idle");
-
-    /* this.tintMaterial = engine.graphicsContext.createMaterial({
-      name: "tint",
-      fragmentSource: tintShader,
-    }); */
-    //this.graphics.material = this.tintMaterial;
   }
 
   onPreUpdate(engine: Engine, elapsed: number): void {
     this.km.update(engine, elapsed);
 
-    if (this.tintColor) {
-      /*  this.graphics.material = this.tintMaterial as Material;
-      this.tintMaterial?.update((shader: Shader) => {
-        shader.trySetUniformFloatColor("u_tintcolor", this.tintColor as Color);
-      }); */
-      this.am.tint(this.tintColor);
-    } else {
-      //this.graphics.material = null;
-      this.am.tint(null);
+    if (this.tintColor) this.am.tint(this.tintColor);
+    else this.am.tint(null);
+
+    if (!this.primaryEnableFlag) {
+      this.primaryCooldownTik += elapsed;
+      if (this.primaryCooldownTik >= this.primaryCooldown) {
+        this.primaryEnableFlag = true;
+        this.primaryCooldownTik = 0;
+      }
+    }
+
+    if (!this.secondaryEnableFlag) {
+      this.secondaryCooldownTik += elapsed;
+      if (this.secondaryCooldownTik >= this.secondaryCooldown) {
+        this.secondaryEnableFlag = true;
+        this.secondaryCooldownTik = 0;
+      }
     }
 
     if (this.vel.y < -10 && this.vel.y > 5) engine.physics.gravity = vec(0, 300);

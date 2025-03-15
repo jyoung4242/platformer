@@ -30,10 +30,13 @@ export class KeyboardControl extends Component {
         case "KeyA":
           (owner as Player).primaryAction(owner as Player, owner.scene!);
           (owner as Player).isAttacking = true;
+          (owner as Player).primaryEnableFlag = false;
+
           break;
         case "KeyS":
           (owner as Player).secondaryAction(owner as Player, owner.scene!);
           (owner as Player).isAttacking = true;
+          (owner as Player).secondaryEnableFlag = false;
           break;
       }
     });

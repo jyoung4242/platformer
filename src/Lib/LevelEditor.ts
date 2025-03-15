@@ -29,6 +29,7 @@ export class LevelEditor {
         rows: mapsize.y,
       };
       let map = new TileMap(options);
+
       let tileIndex = 0;
       for (const tile of map.tiles) {
         let char = getCharAt(parsedMap, tileIndex % options.columns, Math.floor(tileIndex / options.columns));
@@ -41,6 +42,8 @@ export class LevelEditor {
         }
         tileIndex++;
       }
+      console.log(map);
+
       mapArray.push(map);
     });
 
